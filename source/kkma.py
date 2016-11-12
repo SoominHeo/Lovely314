@@ -6,8 +6,8 @@ import codecs
 import time
 
 kkma = Kkma()
-#POS = ["NR", "MDN"]
-POS = ["NNP"]
+POS = ["NR", "MDN"]
+#POS = ["NNP"]
 unit = {
     '백':100, '천':1000,'만':10000,'십만':100000,'백만':1000000,'천만':10000000,'억':100000000,'십억':1000000000,'백억':10000000000,'천억':100000000000,'조':" ",'여':" "
 }
@@ -19,13 +19,20 @@ num_ = {
 }
 
 def nomalization(list):
+    #print (list)
+    #time.sleep(0.5)
     min = 0
     max = 0
+
     for i in range(len(list)):
+        #print (list[i])
         for j in range(len(list[i])-1):
             if list[i][j] == ',':
                 string = list[i][:j] + list[i][j+1:]
                 list[i] = str(string)
+            if list[i][j] == 'Z':
+                list[i] = " "
+                break
 
     for i in range(len(list)):
         for j in range(len(list[i])):
@@ -38,7 +45,7 @@ def nomalization(list):
                 break
 
     for i in range(len(list)-1):
-        if len(list[i])>0 and list[i][0].isdigit() and list[i+1][0].isdigit() and list[i][0] in ['1','2','3','4','5','6','7','8','9','0']:
+        if len(list[i])>0 and len(list[i+1])>0 and list[i][0].isdigit() and list[i+1][0].isdigit() and list[i][0] in ['1','2','3','4','5','6','7','8','9','0']:
             if i > max:
                 min = i
             max = i
@@ -58,6 +65,7 @@ def nomalization(list):
                     list[max] = str(float(sum))
                 else:
                     list[max] = str(int(sum))
+    #print (list)
     return list
 
 total = 0
@@ -68,8 +76,8 @@ lines = 0
 
 input_url = "C:/Users/HEOSOOMIN/Desktop/ko/new_kr/"
 output_url = "C:/Users/HEOSOOMIN/Desktop/ko/new_kr/num/"
-
-num = 572
+#6177
+num = 8000
 new_input_url = ""
 new_output_url = ""
 for art_num in range(8217-num):
@@ -114,14 +122,15 @@ for art_num in range(8217-num):
 
     for i in range(line_num):
         for j in range(len(kkma_list[i])):
+
             if kkma_list[i][j][1] in POS:
                 if kkma_list[i][j][0] in ['백','천','만','십만','백만','천만','억','십억','백억','천억','조','여']:
                     kkma_list[i][j][0] = str(unit[kkma_list[i][j][0]])
+                    #print ("#",kkma_list[i][j][0])
                 if kkma_list[i][j][0] in ['하나', '둘', '셋', '넷', '다섯', '여섯', '일곱', '여덟', '아홉', '열', '일', '이', '삼', '사', '오', '육',
                                   '칠', '팔', '구', '십', '한', '두', '세', '네', '댓', '수십', '수백', '수천', '수만', '수십만', '수백만', '수천만',
                                   '수억', '수십억', '수백억', '수천억', '세이', '석']:
                     kkma_list[i][j][0] = str(num_[(kkma_list[i][j][0])])
-
 
     num_list = [[] for i in range(line_num)]
     for i in range(line_num):
