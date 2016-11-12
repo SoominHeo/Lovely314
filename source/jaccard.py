@@ -89,10 +89,6 @@ def matching(kl,el,i):
             #f_mat.write("\n")
 
     f_mat.write("\n")
-                
-            
-    
-    
 
 i=0
 
@@ -104,7 +100,6 @@ while i<= 10:
         ##문단 구분이 있는 텍스트로 뽑은 숫자 feature
         f_kor=open("ko_num/num"+str(i)+".kor.txt","r",encoding='UTF8')
         f_eng=open("en_num/"+str(i)+".txt","r",encoding='UTF8')
-        
 
         ##문단 구분이 없는 텍스트로 뽑은 숫자 feature 
 
