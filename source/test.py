@@ -124,7 +124,7 @@ def seq(i):
                 if(jj(arr_k[x+1][0],arr_eng[y+1][0])>=0.5): # 한글~영어+1 자카드 확률이 0.5보다 높으면
                     dif_kor_line = arr_k[x+1][1]-arr_k[x][1] # dif_kor_line = 한글에서 line 사이의 개수
                     dif_eng_line = arr_eng[y+1][1]-arr_eng[y][1] # dif_eng_line = 영어에서 line 사이의 개수
-                    if(dif_kor_line==dif_eng_line): # 같으면
+                    if(dif_kor_line==dif_eng_line and dif_kor_line < 3): # 같으면
                         print("KOR")
                         print(arr_k[x])
                         print(arr_k[x+1])
