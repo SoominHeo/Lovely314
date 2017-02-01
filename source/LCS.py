@@ -54,42 +54,34 @@ def jj(k,e):
         return 0
 
 def jaccard(kor, eng):
-
     deno=0
     numer=0
     aver=0
 
     tmp_d=[]
     tmp_k=[]
-
+    
 
     if kor=='\n' or eng=='\n':
         return 0.0
 
     for kk in range(len(kor)):
         if kor[kk]:
-            if kor[kk][0]==' ':
-                
-                tmp=str(kor[kk]).replace(' ','')
-                kor[kk]=tmp
-                j=0
-                
             if kor[kk] not in tmp_k:
                 tmp_k.append(kor[kk])
         else:
             continue
     
-
+    
     tmp_d=copy.deepcopy(tmp_k)
     for ee in range(len(eng)):
-        
         if eng[ee]:
             if eng[ee] not in tmp_k:
                 tmp_d.append(eng[ee])
         else:
             continue
 
-    
+
     deno=len(tmp_d)
 
     
@@ -110,6 +102,7 @@ def jaccard(kor, eng):
     else:
       
         aver=numer/deno
+        
         return aver
 
 
@@ -131,7 +124,10 @@ def LCS(k_art, e_art, k_len, e_len):
 
     for mm in range(k_len):
         for nn in range(e_len):
-            if jj(k_art[mm],e_art[nn])>=0.8:
+            k = k_art[mm].split(', ')
+            e = e_art[nn].split(', ')
+            if jaccard(k,e)>=0.8:
+                print("0.8")
                 LCStable[mm+1][nn+1]=LCStable[mm][nn]+1
             else:
                 if LCStable[mm+1][nn]>=LCStable[mm][nn+1]:
@@ -173,7 +169,7 @@ def seq(i,a):
     p_kor=[]
     p_eng=[]
     for x in range(len(a)-1):
-        if(a[x+1][0]-a[x][0] == a[x+1][1]-a[x][1]):
+        if(a[x+1][0]-a[x][0] == a[x+1][1]-a[x][1] and (a[x+1][1]-a[x][1])<=5):
             kor.append([a[x][0],a[x+1][0]])
             eng.append([a[x][1],a[x+1][1]])
         else:
@@ -186,7 +182,7 @@ def seq(i,a):
             break
         else:
             if(kor[x+1][0]==kor[x][1]):
-                kor[x+1][0]==kor[x][0]
+                kor[x+1][0]=kor[x][0]
                 kor.pop(x)
             else:
                 x=x+1
@@ -197,22 +193,19 @@ def seq(i,a):
             break
         else:
             if(eng[x+1][0]==eng[x][1]):
-                eng[x+1][0]==eng[x][0]
+                eng[x+1][0]=eng[x][0]
                 eng.pop(x)
             else:
                 x=x+1
-
-
-    f_ko = open("../joongang_corpus_data/no_single_space_text/ko/"+str(i)+".kor.txt","rU")
-    f_en = open("../joongang_corpus_data/no_single_space_text/en/"+str(i)+".eng.txt","rU")
+    
+    f_ko = open("./joongang_corpus_data/no_single_space_text/ko/"+str(i)+".kor.txt","rU")
+    f_en = open("./joongang_corpus_data/no_single_space_text/en/"+str(i)+".eng.txt","rU")
     f_total_kor = open("./total/ko/"+str(i)+".kor.txt","w")
     f_total_eng = open("./total/en/"+str(i)+".eng.txt","w")
     i_ko=0
     k=0
     
-    
     while 1:
-        
         if(k==len(kor)):
             break;
         if(len(kor)==0):
@@ -234,10 +227,11 @@ def seq(i,a):
         i_ko=i_ko+1
 
     f_ko.close()
-    f_ko = open("../joongang_corpus_data/no_single_space_text/ko/"+str(i)+".kor.txt","rU")
+    f_ko = open("./joongang_corpus_data/no_single_space_text/ko/"+str(i)+".kor.txt","rU")
     i_ko=0
     k=0
     f_total_kor.write("\n")
+    
     while 1:
         
         if(k==len(p_kor)):
@@ -282,7 +276,7 @@ def seq(i,a):
         f_en.readline()
         i_en=i_en+1
     f_en.close()
-    f_en = open("../joongang_corpus_data/no_single_space_text/en/"+str(i)+".eng.txt","rU")
+    f_en = open("./joongang_corpus_data/no_single_space_text/en/"+str(i)+".eng.txt","rU")
     i_en=0
     e=0
     f_total_eng.write("\n")
@@ -311,13 +305,13 @@ def seq(i,a):
     f_total_kor.close()
     f_total_eng.close()
 
-i=0
+i=1
 
-while i<=8216:
-    #print(i)
+while i<=1:
+    print(i)
     try:
-        f_eng = open("../joongang_corpus_data/no_single_space_text/num/en/"+str(i)+".eng.txt","rU",)
-        f_kor = open("../joongang_corpus_data/no_single_space_text/num/ko/"+str(i)+".kor.txt","rU",)
+        f_eng = open("./joongang_corpus_data/no_single_space_text/num/en/"+str(i)+".eng.txt","rU",)
+        f_kor = open("./joongang_corpus_data/no_single_space_text/num/ko/"+str(i)+".kor.txt","rU",)
     except:
         i=i+1
         continue
@@ -334,6 +328,7 @@ while i<=8216:
 
 
     length=LCS(ko, en, len(ko), len(en))
+    print(length)
     #print("LCS:",length)
 
     result=[]
@@ -342,5 +337,4 @@ while i<=8216:
     seq(i,a)
     i=i+1
 
-print(cnt)
 
